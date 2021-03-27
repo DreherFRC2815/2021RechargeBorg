@@ -5,25 +5,24 @@
 package frc.robot.commands.autoCommands;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
 
 public class AutoDriveDistance extends CommandBase {
   private final DriveTrain driveTrain;
 
-  private final Timer timer = new Timer();
-
-  private final double inches;
-  private final double maxPower;
+  private final double encoderTicks;
+  private boolean done = false;
 
   /**
    * Creates a new AutoDriveDistance.
    * (drivetrain, wheel circumference (inches), gearbox ratio, distance inches, power)
    */
-  public AutoDriveDistance(DriveTrain d, double i, double p) {
+  public AutoDriveDistance(DriveTrain d, double i) {
     driveTrain = d;
-    inches = i;
-    maxPower = p;
+    encoderTicks = (i / Constants.wheelCircumference) * 4096;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveTrain);
@@ -32,28 +31,35 @@ public class AutoDriveDistance extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    timer.start();
-    
-    driveTrain.configPositionalDrive(maxPower);
-    driveTrain.driveDistance(inches);
+    done = false;
+    driveTrain.resetEncoders();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    double[] encoderValues = driveTrain.getEncoders();
+    double encoderAvg = (encoderValues[0] - encoderValues[1]) / 2.0;
+
+    SmartDashboard.putNumber("encoderAvg", encoderAvg);
+
+    if (encoderTicks > encoderAvg) {
+      driveTrain.drive(.3, 0);
+    } else {
+      done = true;
+    }
+  }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    driveTrain.configNormal();
     driveTrain.drive(0, 0);
-
-    timer.stop();
+    driveTrain.resetEncoders();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (driveTrain.getAvgPower() == 0 && timer.get() > .5);
+    return done;
   }
 }

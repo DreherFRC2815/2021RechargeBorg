@@ -39,7 +39,7 @@ public class Drive extends CommandBase {
   @Override
   public void execute() {
     double forwardsValue = -forwardsAxis.getAsDouble();
-    double turnValue = turnAxis.getAsDouble();
+    double turnValue = turnAxis.getAsDouble() * .8;
 
     if (Math.abs(forwardsValue) < .03) {
       forwardsValue = 0.0;

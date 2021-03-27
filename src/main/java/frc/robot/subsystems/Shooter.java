@@ -20,17 +20,28 @@ public class Shooter extends SubsystemBase {
     leftSparkMax = new CANSparkMax(Constants.leftShooterPort, MotorType.kBrushless);
     rightSparkMax = new CANSparkMax(Constants.rightShooterPort, MotorType.kBrushless);
 
+    leftSparkMax.restoreFactoryDefaults();
+    rightSparkMax.restoreFactoryDefaults();
+
     leftSparkMax.setIdleMode(IdleMode.kCoast);
     rightSparkMax.setIdleMode(IdleMode.kCoast);
   }
 
   public void set(boolean on) {
+    // if (on) {
+    //   leftSparkMax.set(1);
+    //   rightSparkMax.set(-1);
+    // } else {
+    //   leftSparkMax.set(0);
+    //   rightSparkMax.set(0);
+    // }
+
     if (on) {
-      leftSparkMax.set(1);
-      rightSparkMax.set(-1);
+      leftSparkMax.setVoltage(12);
+      rightSparkMax.setVoltage(-12);
     } else {
-      leftSparkMax.set(0);
-      rightSparkMax.set(0);
+      leftSparkMax.setVoltage(0);
+      rightSparkMax.setVoltage(0);
     }
   }
 
@@ -41,6 +52,16 @@ public class Shooter extends SubsystemBase {
 
   public double getRPM() {
     return (leftSparkMax.getEncoder().getVelocity() - rightSparkMax.getEncoder().getVelocity()) / 2;
+  }
+
+  public double[] getCurrents() {
+    double[] currents = {leftSparkMax.getOutputCurrent(), rightSparkMax.getOutputCurrent()};
+    return currents;
+  }
+
+  public double[] getVoltages() {
+    double[] voltages = {leftSparkMax.getBusVoltage(), rightSparkMax.getBusVoltage()};
+    return voltages;
   }
 
   @Override

@@ -13,8 +13,8 @@ package frc.robot;
 public class Constants {
     // the talons for driving and moving around and stuff
     public static int[] driveTalonPorts = {0, 1, 2, 3};
-    public static int[] mainTalonPorts = {0, 2};  // talons which have the encoders
-    public static int[] bareTalonPorts = {1, 3};  // talons with no encoders
+    public static int[] mainTalonPorts = {0, 3};  // talons which have the encoders
+    public static int[] bareTalonPorts = {1, 2};  // talons with no encoders
 
     // weird thingy on robot that moves balls from collector to tower
     public static int leftHopperPort = 0;
@@ -36,34 +36,6 @@ public class Constants {
     public static double cameraHeight = -1;
     public static double cameraFovX = 49.7;
     public static double cameraFovY = 59.6;
-
-    	/**
-	 * Which PID slot to pull gains from. Starting 2018, you can choose from
-	 * 0,1,2 or 3. Only the first two (0,1) are visible in web-based
-	 * configuration.
-	 */
-	public static final int kSlotIdx = 0;
-
-	/**
-	 * Talon SRX/ Victor SPX will supported multiple (cascaded) PID loops. For
-	 * now we just want the primary one.
-	 */
-	public static final int kPIDLoopIdx = 0;
-
-	/**
-	 * Set to zero to skip waiting for confirmation, set to nonzero to wait and
-	 * report to DS if action fails.
-	 */
-	public static final int kTimeoutMs = 30;
-	
-	/* Choose so that Talon does not report sensor out of phase */
-	public static boolean kSensorPhase = true;
-
-	/**
-	 * Choose based on what direction you want to be positive,
-	 * this does not affect motor invert. 
-	 */
-	public static boolean kMotorInvert = false;
 
 	/**
 	 * Gains used in Positon Closed Loop, to be adjusted accordingly

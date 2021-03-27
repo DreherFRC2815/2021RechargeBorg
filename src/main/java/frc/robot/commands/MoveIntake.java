@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
@@ -12,12 +13,12 @@ import frc.robot.subsystems.Intake;
 public class MoveIntake extends CommandBase {
   private final Intake intake;
   
-  private final BooleanSupplier button;
+  private final DoubleSupplier axis;
 
   /** Creates a new MoveIntake. */
-  public MoveIntake(Intake i, BooleanSupplier b) {
+  public MoveIntake(Intake i, DoubleSupplier a) {
     intake = i;
-    button = b;
+    axis = a;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake);
@@ -30,7 +31,7 @@ public class MoveIntake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.set(button.getAsBoolean());
+    intake.set(axis.getAsDouble() * .75);
   }
 
   // Called once the command ends or is interrupted.

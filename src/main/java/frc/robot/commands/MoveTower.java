@@ -16,14 +16,16 @@ public class MoveTower extends CommandBase {
   private final Tower tower;
 
   private final BooleanSupplier upButton;
+  private final BooleanSupplier upButton2;
   private final BooleanSupplier downButton;
 
   /**
    * Creates a new MoveTower.
    */
-  public MoveTower(Tower t, BooleanSupplier u, BooleanSupplier d) {
+  public MoveTower(Tower t, BooleanSupplier u, BooleanSupplier u2, BooleanSupplier d) {
     tower = t;
     upButton = u;
+    upButton2 = u2;
     downButton = d;
     
     // Use addRequirements() here to declare subsystem dependencies.
@@ -38,10 +40,10 @@ public class MoveTower extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (upButton.getAsBoolean()) {
-      tower.set(.5);
-    } else if (downButton.getAsBoolean()) {
+    if (upButton.getAsBoolean() || upButton2.getAsBoolean()) {
       tower.set(-.5);
+    } else if (downButton.getAsBoolean()) {
+      tower.set(.5);
     } else {
       tower.set(0);
     }

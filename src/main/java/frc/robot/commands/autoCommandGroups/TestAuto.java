@@ -12,14 +12,12 @@ import frc.robot.subsystems.DriveTrain;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class TestAuto extends SequentialCommandGroup {
-  private final DriveTrain driveTrain;
 
   /** Creates a new TestAuto. */
-  public TestAuto(DriveTrain d) {
-    driveTrain = d;
+  public TestAuto(DriveTrain driveTrain) {
 
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new AutoDriveDistance(driveTrain, 12, .1));
+    addCommands(new AutoDriveDistance(driveTrain, 12*3));
   }
 }

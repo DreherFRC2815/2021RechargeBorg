@@ -20,7 +20,6 @@ import frc.robot.Constants;
 
 public class DriveTrain extends SubsystemBase {
   private final WPI_TalonSRX[] talons = new WPI_TalonSRX[4];
-  private final Faults[] faultss = new Faults[2];
 
   private final DifferentialDrive botDrive;
 
@@ -51,47 +50,60 @@ public class DriveTrain extends SubsystemBase {
     }
   }
 
-  public void configPositionalDrive(double maxP) {
-    for (WPI_TalonSRX talon : talons) {
-      talon.configFactoryDefault();
-      talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
-      talon.setSensorPhase(Constants.kSensorPhase);
-      talon.setInverted(Constants.kMotorInvert);
-      talon.configNominalOutputForward(0, Constants.kTimeoutMs);
-      talon.configNominalOutputReverse(0, Constants.kTimeoutMs);
-      talon.configPeakOutputForward(maxP, Constants.kTimeoutMs);
-      talon.configPeakOutputReverse(-maxP, Constants.kTimeoutMs);
-      talon.configAllowableClosedloopError(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
-      talon.config_kF(Constants.kPIDLoopIdx, Constants.kGains.kF, Constants.kTimeoutMs);
-      talon.config_kP(Constants.kPIDLoopIdx, Constants.kGains.kP, Constants.kTimeoutMs);
-      talon.config_kI(Constants.kPIDLoopIdx, Constants.kGains.kI, Constants.kTimeoutMs);
-      talon.config_kD(Constants.kPIDLoopIdx, Constants.kGains.kD, Constants.kTimeoutMs);
+  // public void configPositionalDrive(double maxP) {
+  //   for (int i = 0; i < Constants.mainTalonPorts.length; i++) {
+  //     WPI_TalonSRX talon = talons[i];
+
+  //     talon.configFactoryDefault();
+
+  //     talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
+
+  //     talon.setSensorPhase(true);
+  //     talon.setInverted((i == 0 ? false : true));
+
+  //     talon.configNominalOutputForward(.5, 30);
+  //     talon.configNominalOutputReverse(-.5, 30);
+  //     talon.configPeakOutputForward(maxP, 30);
+  //     talon.configPeakOutputReverse(-maxP, 30);
+  //     talon.configAllowableClosedloopError(0, 0, 30);
+
+  //     talon.config_kF(0, Constants.kGains.kF, 30);
+  //     talon.config_kP(0, Constants.kGains.kP, 30);
+  //     talon.config_kI(0, Constants.kGains.kI, 30);
+  //     talon.config_kD(0, Constants.kGains.kD, 30);
   
-      int absolutePosition = talon.getSensorCollection().getPulseWidthPosition() & 0xFFF;
+  //     // int absolutePosition = talon.getSensorCollection().getPulseWidthPosition() & 0xFFF;
 
-      if (Constants.kSensorPhase) { absolutePosition *= -1; }
-      if (Constants.kMotorInvert) { absolutePosition *= -1; }
+  //     // if (Constants.kSensorPhase) { absolutePosition *= -1; }
+  //     // if (Constants.kMotorInvert) { absolutePosition *= -1; }
 
-      talon.setSelectedSensorPosition(absolutePosition, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
-    }
+  //     talon.setSelectedSensorPosition(0, 0, 30);
+  //   }
+  // }
+
+  public void driveTank(double lPow, double rPow) {
+    botDrive.tankDrive(lPow, rPow);
   }
 
   public void drive(double f, double t) {
     SmartDashboard.putNumber("forw", f);
     SmartDashboard.putNumber("turn", t);
     
-    botDrive.curvatureDrive(f, t, true);
+    double eLeft = talons[Constants.mainTalonPorts[0]].getSelectedSensorPosition();
+    double eRight = talons[Constants.mainTalonPorts[1]].getSelectedSensorPosition();
 
-    // talons[Constants.mainTalonPorts[0]].getFaults(faultss[0]);
-    // talons[Constants.mainTalonPorts[1]].getFaults(faultss[1]);
-  }
+    SmartDashboard.putNumber("eLeft", eLeft);
+    SmartDashboard.putNumber("eRight", eRight);
 
-  public void driveDistance(double inches) {
-    double targetPositionRotations = (inches / Constants.wheelCircumference) * 4096;
+    double eVLeft = talons[Constants.mainTalonPorts[0]].getSelectedSensorVelocity();
+    double eVRight = talons[Constants.mainTalonPorts[1]].getSelectedSensorVelocity();
 
-    for (WPI_TalonSRX talon : talons) {
-      talon.set(ControlMode.Position, targetPositionRotations);
+    if (t == 0) {
+      t = (eVLeft + eVRight) / 768 * -Math.abs(f);
+      SmartDashboard.putNumber("tError", t);
     }
+    
+    botDrive.curvatureDrive(f, t, true);
   }
 
   public double getAvgPower() {
@@ -102,6 +114,25 @@ public class DriveTrain extends SubsystemBase {
     }
 
     return power / talons.length;
+  }
+
+  public void resetEncoders() {
+    talons[Constants.mainTalonPorts[0]].setSelectedSensorPosition(0);
+    talons[Constants.mainTalonPorts[1]].setSelectedSensorPosition(0);
+  }
+
+  public double[] getEncoders() {
+    return new double[] {
+      talons[Constants.mainTalonPorts[0]].getSelectedSensorPosition(),
+      talons[Constants.mainTalonPorts[1]].getSelectedSensorPosition()
+    };
+  }
+
+  public double[] getEncodersVelocity() {
+    return new double[] {
+      talons[Constants.mainTalonPorts[0]].getSelectedSensorVelocity(),
+      talons[Constants.mainTalonPorts[1]].getSelectedSensorVelocity()
+    };
   }
 
   @Override
