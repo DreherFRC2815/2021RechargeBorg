@@ -1,5 +1,7 @@
 # Created by https://www.gitignore.io/api/c++,java,linux,macos,gradle,windows,visualstudiocode
 
+characterization-project/build
+
 ### C++ ###
 # Prerequisites
 *.d
