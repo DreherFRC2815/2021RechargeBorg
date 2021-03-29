@@ -11,9 +11,10 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.DriveTrain2;
 
 public class Drive extends CommandBase {
-  private final DriveTrain driveTrain;
+  private final DriveTrain2 driveTrain;
   
   private final DoubleSupplier forwardsAxis;
   private final DoubleSupplier turnAxis;
@@ -21,7 +22,7 @@ public class Drive extends CommandBase {
   /**
    * Creates a new Drive.
    */
-  public Drive(DriveTrain d, DoubleSupplier f, DoubleSupplier t) {
+  public Drive(DriveTrain2 d, DoubleSupplier f, DoubleSupplier t) {
     driveTrain = d;
     forwardsAxis = f;
     turnAxis = t;
@@ -49,7 +50,7 @@ public class Drive extends CommandBase {
       turnValue = 0.0;
     }
 
-    driveTrain.drive(forwardsValue, turnValue);
+    driveTrain.curvatureDrive(forwardsValue, turnValue);
   }
 
   // Called once the command ends or is interrupted.

@@ -99,6 +99,16 @@ public class DriveTrain2 extends SubsystemBase {
   }
 
   /**
+   * Drives the robot using curvature drive (essentially arcade drive) controls.
+   *
+   * @param fwd the commanded forward movement
+   * @param rot the commanded rotation
+   */
+  public void curvatureDrive(double fwd, double rot) {
+    differentialDrive.curvatureDrive(fwd, rot, true);
+  }
+
+  /**
    * Controls the left and right sides of the drive directly with voltages.
    *
    * @param leftVolts  the commanded left output

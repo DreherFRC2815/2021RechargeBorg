@@ -78,45 +78,46 @@ public class RobotContainer {
   }
 
   public void setup() {
-    // mano = new XboxController(0);
+    mano = new XboxController(0);
 
-    // if (DriverStation.getInstance().getJoystickName(1).isEmpty()) {
-    //   mano2 = mano;
-    // } else {
-    //   mano2 = new XboxController(1);
-    // }
+    if (DriverStation.getInstance().getJoystickName(1).isEmpty()) {
+      mano2 = mano;
+    } else {
+      mano2 = new XboxController(1);
+    }
 
-    // if (driveMode.equals("trigger")) {
-    //   drive = new Drive(driveTrain,
-    //       () -> (mano.getTriggerAxis(GenericHID.Hand.kRight) - mano.getTriggerAxis(GenericHID.Hand.kLeft)),
-    //       () -> mano.getX(GenericHID.Hand.kRight));
-    // } else {
-    //   drive = new Drive(driveTrain, () -> mano.getY(GenericHID.Hand.kLeft), () -> mano.getX(GenericHID.Hand.kRight));
-    // }
+    if (driveMode.equals("trigger")) {
+      drive = new Drive(driveTrain2,
+          () -> (mano.getTriggerAxis(GenericHID.Hand.kRight) - mano.getTriggerAxis(GenericHID.Hand.kLeft)),
+          () -> mano.getX(GenericHID.Hand.kRight));
+    } else {
+      drive = new Drive(driveTrain2, () -> mano.getY(GenericHID.Hand.kLeft), () -> mano.getX(GenericHID.Hand.kRight));
+    }
 
-    // moveTower = new MoveTower(tower, () -> mano2.getBumper(GenericHID.Hand.kRight), () -> mano2.getXButton(),
-    //     () -> mano2.getBumper(GenericHID.Hand.kLeft));
+    moveTower = new MoveTower(tower, () -> mano2.getBumper(GenericHID.Hand.kRight), () -> mano2.getXButton(),
+        () -> mano2.getBumper(GenericHID.Hand.kLeft));
 
-    // moveHopper = new MoveHopper(hopper, () -> mano2.getXButton());
-    // shootShooter = new ShootShooter(shooter, () -> mano2.getYButtonPressed(), () -> mano2.getPOV());
+    moveHopper = new MoveHopper(hopper, () -> mano2.getXButton());
+    shootShooter = new ShootShooter(shooter, () -> mano2.getYButtonPressed(), () -> mano2.getPOV());
 
-    // if (mano2.equals(mano)) {
-    //   moveIntake = new MoveIntake(intake,
-    //       () -> (mano.getTriggerAxis(GenericHID.Hand.kRight) - mano.getTriggerAxis(GenericHID.Hand.kLeft)));
-    // } else {
-    //   moveIntake = new MoveIntake(intake, () -> mano2.getY(GenericHID.Hand.kLeft));
-    // }
+    if (mano2.equals(mano)) {
+      moveIntake = new MoveIntake(intake,
+          () -> (mano.getTriggerAxis(GenericHID.Hand.kRight) - mano.getTriggerAxis(GenericHID.Hand.kLeft)));
+    } else {
+      moveIntake = new MoveIntake(intake, () -> mano2.getY(GenericHID.Hand.kLeft));
+    }
 
-    // driveTrain.setDefaultCommand(drive);
-    // tower.setDefaultCommand(moveTower);
-    // hopper.setDefaultCommand(moveHopper);
-    // shooter.setDefaultCommand(shootShooter);
-    // intake.setDefaultCommand(moveIntake);
+    driveTrain2.setDefaultCommand(drive);
+    tower.setDefaultCommand(moveTower);
+    hopper.setDefaultCommand(moveHopper);
+    shooter.setDefaultCommand(shootShooter);
+    intake.setDefaultCommand(moveIntake);
   }
 
   // public TestAuto getAutonomousCommand() {
   //   return new TestAuto(driveTrain);
   // }
+  
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
