@@ -41,11 +41,11 @@ public class Constants {
     public static final double cameraFovY = 59.6;
 
     // PathWeaver stuff
-    public static final double ksVolts = 1.09;
-    public static final double kvVoltSecondsPerMeter = 6.22;
-    public static final double kaVoltSecondsSquaredPerMeter = 1.25;
+    public static final double ksVolts = 0.751;
+    public static final double kvVoltSecondsPerMeter = 6.36;
+    public static final double kaVoltSecondsSquaredPerMeter = 0.768;
 
-    public static final double kPDriveVel = 79.4;
+    public static final double kPDriveVel = 0.0636;
 
     public static final double kTrackwidthMeters = 0.2706473008527956;
     public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackwidthMeters);
