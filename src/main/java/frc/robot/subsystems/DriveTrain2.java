@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.MagEncoder;
@@ -60,6 +61,15 @@ public class DriveTrain2 extends SubsystemBase {
                       rightEncoder.getDistance());
   }
 
+  private void logEncoderValues() {
+    double leftEncoderValue = getLeftEncoder().getDistance();
+    double rightEncoderValue = getRightEncoder().getDistance();
+
+    SmartDashboard.putNumber("Left Encoder", leftEncoderValue);
+    SmartDashboard.putNumber("Right Encoder", rightEncoderValue);
+    SmartDashboard.putNumber("Encoder Diff", leftEncoderValue + rightEncoderValue);
+  }
+
   /**
    * Returns the currently-estimated pose of the robot.
    *
@@ -96,6 +106,7 @@ public class DriveTrain2 extends SubsystemBase {
    */
   public void arcadeDrive(double fwd, double rot) {
     differentialDrive.arcadeDrive(fwd, rot);
+    logEncoderValues();
   }
 
   /**
@@ -106,6 +117,7 @@ public class DriveTrain2 extends SubsystemBase {
    */
   public void curvatureDrive(double fwd, double rot) {
     differentialDrive.curvatureDrive(fwd, rot, true);
+    logEncoderValues();
   }
 
   /**
@@ -118,6 +130,7 @@ public class DriveTrain2 extends SubsystemBase {
     leftMotors.setVoltage(leftVolts);
     rightMotors.setVoltage(-rightVolts);
     differentialDrive.feed();
+    logEncoderValues();
   }
 
   /**
