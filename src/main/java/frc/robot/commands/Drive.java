@@ -42,15 +42,15 @@ public class Drive extends CommandBase {
     double forwardsValue = -forwardsAxis.getAsDouble();
     double turnValue = turnAxis.getAsDouble() * .8;
 
-    if (Math.abs(forwardsValue) < .03) {
+    if (Math.abs(forwardsValue) < .05) {
       forwardsValue = 0.0;
     }
 
-    if (Math.abs(turnValue) < .04) {
+    if (Math.abs(turnValue) < .05) {
       turnValue = 0.0;
     }
 
-    driveTrain.curvatureDrive(forwardsValue, turnValue);
+    driveTrain.curvatureDrive(-1 * forwardsValue, turnValue);
   }
 
   // Called once the command ends or is interrupted.
