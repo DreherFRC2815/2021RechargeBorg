@@ -39,7 +39,7 @@ public class Drive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double forwardsValue = forwardsAxis.getAsDouble();
+    double forwardsValue = -forwardsAxis.getAsDouble();
     double turnValue = turnAxis.getAsDouble() * .8;
 
     if (Math.abs(forwardsValue) < .05) {
