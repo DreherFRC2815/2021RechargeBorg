@@ -45,9 +45,9 @@ public class Constants {
     public static final double kvVoltSecondsPerMeter = 6.36;
     public static final double kaVoltSecondsSquaredPerMeter = 0.768;
 
-    public static final double kPDriveVel = 0.0636;
+    public static final double kPDriveVel = 0.0636; // convert gains button was checked in the data analyzer window, unchecked this value would be 54.4
 
-    public static final double kTrackwidthMeters = 0.2706473008527956;
+    public static final double kTrackwidthMeters = 0.2701945795141343;
     public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackwidthMeters);
 
     public static final double kMaxSpeedMetersPerSecond = 3.0;
@@ -60,6 +60,4 @@ public class Constants {
     public static final double kRamseteZeta = 0.7;
 
     public static final double kMagEncoderDistancePerPulse = 0.47877871986 / 4096;
-
-    
 }
