@@ -33,7 +33,9 @@ public class Constants {
     // the spark for the redline which powers the tower
     public static final int towerPort = 1;
     
-    public static final double wheelCircumference = 18.5;
+    public static final double wheelCircumference = 18.85;  // inches
+    public static final double wheelCircumferenceMeters = 0.47877871986;  // meters
+    public static final double wheelDiameterMeters = 0.1524;  // meters
     public static final double gearboxRatio = 10.91;
 
     public static final double cameraHeight = -1;
@@ -41,23 +43,21 @@ public class Constants {
     public static final double cameraFovY = 59.6;
 
     // PathWeaver stuff
-    public static final double ksVolts = 0.751;
-    public static final double kvVoltSecondsPerMeter = 6.36;
-    public static final double kaVoltSecondsSquaredPerMeter = 0.768;
+    public static final double ksVolts = 0.742;
+    public static final double kvVoltSecondsPerMeter = 3.29;
+    public static final double kaVoltSecondsSquaredPerMeter = 0.44;
 
-    public static final double kPDriveVel = 0.0636; // convert gains button was checked in the data analyzer window, unchecked this value would be 54.4
+    public static final double kPDriveVel = 0.08;
 
-    public static final double kTrackwidthMeters = 0.2701945795141343;
+    public static final double kTrackwidthMeters = 0.5369566868741729;
     public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackwidthMeters);
 
-    public static final double kMaxSpeedMetersPerSecond = 3.0;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 3.0;
-    
-    // public static final double kMaxSpeedMetersPerSecond = 0.1;
-    // public static final double kMaxAccelerationMetersPerSecondSquared = 0.1;
+    public static final double kMaxSpeedMetersPerSecond = 0.2;
+    public static final double kMaxAccelerationMetersPerSecondSquared = .25;
 
     public static final double kRamseteB = 2.0;
     public static final double kRamseteZeta = 0.7;
 
-    public static final double kMagEncoderDistancePerPulse = 0.47877871986 / 4096;
+    // public static final double kMagEncoderDistancePerPulse = 0.47877871986 / 4096;
+    public static final double kMagEncoderDistancePerPulse = (Math.PI * wheelDiameterMeters * 2.0) / 4096.0;
 }

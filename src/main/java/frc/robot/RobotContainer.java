@@ -117,6 +117,10 @@ public class RobotContainer {
     driveTrain2.resetEncoders();
   }
 
+  public static ADXRS450_Gyro getGyro() {
+    return gyro;
+  }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -131,33 +135,29 @@ public class RobotContainer {
     // Create config for trajectory
     TrajectoryConfig config = new TrajectoryConfig(Constants.kMaxSpeedMetersPerSecond,
         Constants.kMaxAccelerationMetersPerSecondSquared)
-            // Add kinematics to ensure max speed is actually obeyed // unsure if it's actually that as there's a MaxVelocityConstraint
+            // Add kinematics to ensure max speed is actually obeyed // unsure if it's
+            // actually that as there's a MaxVelocityConstraint
             .setKinematics(Constants.kDriveKinematics)
             // apply max velocity constraint
             // .addConstraint(new MaxVelocityConstraint(.2))
             // Apply the voltage constraint
             .addConstraint(autoVoltageConstraint);
 
-    // // An example trajectory to follow. All units in meters.
-    // Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-    //     // Start at the origin facing the +X direction
-    //     new Pose2d(0, 0, new Rotation2d(0)),
-    //     // Pass through these two interior waypoints, making an 's' curve path
-    //     List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
-    //     // End 3 meters straight ahead of where we started, facing forward
-    //     new Pose2d(3, 0, new Rotation2d(0)),
-    //     // Pass config
-    //     config);
-
+    // An example trajectory to follow. All units in meters.
+    // s curve
     Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-      // Start at the origin facing the +X direction
-      new Pose2d(0, 0, new Rotation2d(0)),
-      // Pass through these two interior waypoints, making an 's' curve path
-      List.of(),
-      // End 3 meters straight ahead of where we started, facing forward
-      new Pose2d(2, 0, new Rotation2d(0)),
-      // Pass config
-      config);
+    // Start at the origin facing the +X direction
+    new Pose2d(0, 0, new Rotation2d(0)),
+    // Pass through these two interior waypoints, making an 's' curve path
+    List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+    // End 3 meters straight ahead of where we started, facing forward
+    new Pose2d(3, 0, new Rotation2d(0)),
+    // Pass config
+    config);
+
+    // should go 1 meter forward
+    // Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(new Pose2d(0, 0, Rotation2d.fromDegrees(90)),
+    //     List.of(), new Pose2d(0, .5, Rotation2d.fromDegrees(90)), config);
 
     RamseteCommand ramseteCommand = new RamseteCommand(exampleTrajectory, driveTrain2::getPose,
         new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
@@ -168,8 +168,10 @@ public class RobotContainer {
         // RamseteCommand passes volts to the callback
         driveTrain2::tankDriveVolts, driveTrain2);
 
-    // Reset odometry to the starting pose of the trajectory.
+    // Reset everything
     driveTrain2.resetOdometry(exampleTrajectory.getInitialPose());
+    driveTrain2.resetEncoders();
+    driveTrain2.zeroHeading();
 
     // Run path following command, then stop at the end.
     return ramseteCommand.andThen(() -> driveTrain2.tankDriveVolts(0, 0));

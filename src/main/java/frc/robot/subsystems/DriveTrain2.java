@@ -39,7 +39,7 @@ public class DriveTrain2 extends SubsystemBase {
 
   private final DifferentialDrive differentialDrive = new DifferentialDrive(leftMotors, rightMotors);
 
-  private final ADXRS450_Gyro gyro = RobotContainer.gyro;
+  private final ADXRS450_Gyro gyro;
 
   private final DifferentialDriveOdometry differentialDriveOdometry;
 
@@ -50,7 +50,7 @@ public class DriveTrain2 extends SubsystemBase {
 
     resetEncoders();
 
-
+    gyro = RobotContainer.getGyro();
     differentialDriveOdometry = new DifferentialDriveOdometry(gyro.getRotation2d());
   }
 
@@ -61,13 +61,15 @@ public class DriveTrain2 extends SubsystemBase {
                       rightEncoder.getDistance());
   }
 
-  private void logEncoderValues() {
+  private void logTelemetry() {
     double leftEncoderValue = getLeftEncoder().getDistance();
     double rightEncoderValue = getRightEncoder().getDistance();
 
     SmartDashboard.putNumber("Left Encoder", leftEncoderValue);
     SmartDashboard.putNumber("Right Encoder", rightEncoderValue);
     SmartDashboard.putNumber("Encoder Diff", leftEncoderValue + rightEncoderValue);
+    SmartDashboard.putNumber("Gyro Heading", getHeading());
+    SmartDashboard.putNumber("Gyro Rate", getTurnRate());
   }
 
   /**
@@ -106,7 +108,7 @@ public class DriveTrain2 extends SubsystemBase {
    */
   public void arcadeDrive(double fwd, double rot) {
     differentialDrive.arcadeDrive(fwd, rot);
-    logEncoderValues();
+    logTelemetry();
   }
 
   /**
@@ -117,7 +119,7 @@ public class DriveTrain2 extends SubsystemBase {
    */
   public void curvatureDrive(double fwd, double rot) {
     differentialDrive.curvatureDrive(fwd, rot, true);
-    logEncoderValues();
+    logTelemetry();
   }
 
   /**
@@ -130,7 +132,7 @@ public class DriveTrain2 extends SubsystemBase {
     leftMotors.setVoltage(leftVolts);
     rightMotors.setVoltage(-rightVolts);
     differentialDrive.feed();
-    logEncoderValues();
+    logTelemetry();
   }
 
   /**
@@ -201,5 +203,4 @@ public class DriveTrain2 extends SubsystemBase {
   public double getTurnRate() {
     return -gyro.getRate();
   }
-
 }
