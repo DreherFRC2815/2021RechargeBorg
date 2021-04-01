@@ -40,6 +40,7 @@ public class ShootShooter extends CommandBase {
   @Override
   public void execute() {
     int povAngle = POV.getAsInt();
+
     if (povAngle == -1) {
       didSet = false;
     } else if (!didSet) {
@@ -48,15 +49,16 @@ public class ShootShooter extends CommandBase {
       } else if (povAngle == 180 && power > .025) {
         power -= .025;
       }
-        didSet = true;
+      
+      didSet = true;
     }
+
     if (shoot.getAsBoolean()) {
       shooting = !shooting;
     }
 
-    shooter.set(shooting ? power : 0);
+    shooter.setPower(shooting ? power : 0);
 
-    SmartDashboard.putNumber("Shooter RPM", shooter.getRPM());
     SmartDashboard.putNumber("Power", power);
   }
 

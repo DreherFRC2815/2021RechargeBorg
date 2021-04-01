@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -27,27 +28,19 @@ public class Shooter extends SubsystemBase {
     rightSparkMax.setIdleMode(IdleMode.kCoast);
   }
 
-  public void set(boolean on) {
-    // if (on) {
-    //   leftSparkMax.set(1);
-    //   rightSparkMax.set(-1);
-    // } else {
-    //   leftSparkMax.set(0);
-    //   rightSparkMax.set(0);
-    // }
+  public void set(double r) {
+    double rpm = getRPM();
+    double error = r / rpm;
 
-    if (on) {
-      leftSparkMax.setVoltage(12);
-      rightSparkMax.setVoltage(-12);
-    } else {
-      leftSparkMax.setVoltage(0);
-      rightSparkMax.setVoltage(0);
-    }
+    SmartDashboard.putNumber("Shooter Error", error);
+    SmartDashboard.putNumber("Shooter RPM", rpm);
+
+    leftSparkMax.set(error);
+    rightSparkMax.set(-error);
   }
 
-  public void set(double p) {
-    leftSparkMax.set(p);
-    rightSparkMax.set(-p);
+  public void setPower(double p) {
+    set(p * 5700.0);
   }
 
   public double getRPM() {
