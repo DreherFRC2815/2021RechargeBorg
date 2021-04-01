@@ -39,20 +39,6 @@ public class ShootShooter extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // shooter.set(shoot.getAsBoolean());
-    // double povAngle = xbox.getPOV();
-
-    // if (povAngle == -1) {
-    //   didSet = false;
-    // } else if (!didSet) {
-    //   if (povAngle == 0 && power < 1) {
-    //     power += .05;
-    //   } else if (povAngle == 180 && power > .05) {
-    //     power -= .05;
-    //   }
-
-    //   didSet = true;
-    // }
     int povAngle = POV.getAsInt();
     if (povAngle == -1) {
       didSet = false;
