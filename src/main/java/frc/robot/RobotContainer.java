@@ -98,7 +98,7 @@ public class RobotContainer {
     moveTower = new MoveTower(tower, () -> mano2.getBumper(GenericHID.Hand.kRight), () -> mano2.getXButton(),
         () -> mano2.getBumper(GenericHID.Hand.kLeft));
 
-    moveHopper = new MoveHopper(hopper, () -> mano2.getXButton());
+    moveHopper = new MoveHopper(hopper, () -> mano2.getXButton(), () -> mano2.getAButton());
     shootShooter = new ShootShooter(shooter, () -> mano2.getYButtonPressed(), () -> mano2.getPOV());
 
     if (mano2.equals(mano)) {
