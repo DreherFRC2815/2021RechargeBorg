@@ -16,13 +16,15 @@ public class MoveHopper extends CommandBase {
   private final Hopper hopper;
   
   private final BooleanSupplier runButton;
+  private final BooleanSupplier backButton;
 
   /**
    * Creates a new MoveHopper.
    */
-  public MoveHopper(Hopper h, BooleanSupplier b) {
+  public MoveHopper(Hopper h, BooleanSupplier b, BooleanSupplier r) {
     hopper = h;
     runButton = b;
+    backButton = r;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(hopper);
@@ -38,6 +40,8 @@ public class MoveHopper extends CommandBase {
   public void execute() {
     if (runButton.getAsBoolean()) {
       hopper.set(.5);
+    } else if (backButton.getAsBoolean()) {
+      hopper.set(-.5);
     } else {
       hopper.set(0);
     }
