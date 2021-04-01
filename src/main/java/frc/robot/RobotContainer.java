@@ -149,9 +149,9 @@ public class RobotContainer {
     // Start at the origin facing the +X direction
     new Pose2d(0, 0, new Rotation2d(0)),
     // Pass through these two interior waypoints, making an 's' curve path
-    List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+    List.of(new Translation2d(.5, .5), new Translation2d(1, -.5), new Translation2d(1.5, 0)),
     // End 3 meters straight ahead of where we started, facing forward
-    new Pose2d(3, 0, new Rotation2d(0)),
+    new Pose2d(1.51, 0, new Rotation2d(0)),
     // Pass config
     config);
 
@@ -168,10 +168,8 @@ public class RobotContainer {
         // RamseteCommand passes volts to the callback
         driveTrain2::tankDriveVolts, driveTrain2);
 
-    // Reset everything
+    // Reset odometry
     driveTrain2.resetOdometry(exampleTrajectory.getInitialPose());
-    driveTrain2.resetEncoders();
-    driveTrain2.zeroHeading();
 
     // Run path following command, then stop at the end.
     return ramseteCommand.andThen(() -> driveTrain2.tankDriveVolts(0, 0));
