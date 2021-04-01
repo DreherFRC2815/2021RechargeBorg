@@ -36,7 +36,24 @@ public class Drive extends CommandBase {
   public void initialize() {
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
+  // // Called every time the scheduler runs while the command is scheduled.
+  // @Override
+  // public void execute() {
+  //   double forwardsValue = -forwardsAxis.getAsDouble();
+  //   double turnValue = turnAxis.getAsDouble() * .8;
+
+  //   if (Math.abs(forwardsValue) < .05) {
+  //     forwardsValue = 0.0;
+  //   }
+
+  //   if (Math.abs(turnValue) < .05) {
+  //     turnValue = 0.0;
+  //   }
+
+  //   // driveTrain.curvatureDrive(Math.copySign(Math.pow(forwardsValue, 1.25), forwardsValue), Math.copySign(Math.pow(turnValue, 1.25), turnValue));
+  //   driveTrain.curvatureDrive(forwardsValue, turnValue);
+  // }
+
   @Override
   public void execute() {
     double forwardsValue = -forwardsAxis.getAsDouble();
@@ -50,7 +67,18 @@ public class Drive extends CommandBase {
       turnValue = 0.0;
     }
 
-    driveTrain.curvatureDrive(forwardsValue, turnValue);
+    double forwardsNegation = 1.0;
+    double turnNegation = 1.0;
+
+    if (forwardsValue < 0.0) {
+      forwardsNegation = -1.0;
+    }
+
+    if (turnValue < 0.0) {
+      turnNegation = -1.0;
+    }
+
+    driveTrain.curvatureDrive(Math.pow(Math.abs(forwardsValue), 1.25) * forwardsNegation, Math.pow(Math.abs(turnValue), 1.25) * turnNegation);
   }
 
   // Called once the command ends or is interrupted.
