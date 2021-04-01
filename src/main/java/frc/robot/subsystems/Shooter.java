@@ -30,7 +30,7 @@ public class Shooter extends SubsystemBase {
 
   public void set(double r) {
     double rpm = getRPM();
-    double error = r / rpm;
+    double error = r / (rpm + .000000001);
 
     SmartDashboard.putNumber("Shooter Error", error);
     SmartDashboard.putNumber("Shooter RPM", rpm);
@@ -40,6 +40,8 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setPower(double p) {
+    SmartDashboard.putNumber("Input P", p);
+    SmartDashboard.putNumber("Output RPM", 5700.0 * p);
     set(p * 5700.0);
   }
 
