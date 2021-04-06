@@ -78,7 +78,7 @@ public class Drive extends CommandBase {
       turnNegation = -1.0;
     }
 
-    driveTrain.curvatureDrive(Math.pow(Math.abs(forwardsValue), 1.25) * forwardsNegation, Math.pow(Math.abs(turnValue), 1.25) * turnNegation);
+    driveTrain.teleopDrive(Math.pow(Math.abs(forwardsValue), 1.5) * forwardsNegation, Math.pow(Math.abs(turnValue), 1.5) * turnNegation);
   }
 
   // Called once the command ends or is interrupted.

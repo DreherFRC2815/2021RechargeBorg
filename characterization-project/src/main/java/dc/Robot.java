@@ -92,9 +92,9 @@ public class Robot extends TimedRobot {
   static private int ENCODER_EPR = 4096;
   static private double GEARING = 10.91;
   
-//  private double encoderConstant = (1 / GEARING) * (1 / ENCODER_EDGES_PER_REV);
-  private double encoderConstant = (Math.PI * 0.1524 * 2.0) / 4096.0;
-//  private double encoderConstant = GEARING/4096.0;
+//  private double encoderConstant = (1 / (Math.PI * 0.1524)) * (1 / ENCODER_EDGES_PER_REV);
+//  private double encoderConstant = (Math.PI * 0.1524 * 2.0) / 4096.0;
+  private double encoderConstant = 4096.0/GEARING;
 
   XboxController xbox;
   DifferentialDrive drive;

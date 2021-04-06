@@ -7,10 +7,14 @@
 
 package frc.robot;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.command.Command;
@@ -24,6 +28,7 @@ import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.trajectory.constraint.MaxVelocityConstraint;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
@@ -58,6 +63,8 @@ public class RobotContainer {
 
   RamseteController controller1 = new RamseteController();
   RamseteController controller2 = new RamseteController(2.1, 0.8);
+
+  private Trajectory trajectory;
 
   // Subsystems
   // private final DriveTrain driveTrain = new DriveTrain();
@@ -121,6 +128,10 @@ public class RobotContainer {
     return gyro;
   }
 
+  public void setTrajectory(Trajectory t) {
+    trajectory = t;
+  }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -145,21 +156,21 @@ public class RobotContainer {
 
     // An example trajectory to follow. All units in meters.
     // s curve
-    Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-    // Start at the origin facing the +X direction
-    new Pose2d(0, 0, new Rotation2d(0)),
-    // Pass through these two interior waypoints, making an 's' curve path
-    List.of(new Translation2d(.5, .5), new Translation2d(1, -.5), new Translation2d(1.5, 0)),
-    // End 3 meters straight ahead of where we started, facing forward
-    new Pose2d(1.51, 0, new Rotation2d(0)),
-    // Pass config
-    config);
+    // Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
+    // // Start at the origin facing the +X direction
+    // new Pose2d(0, 0, new Rotation2d(0)),
+    // // Pass through these two interior waypoints, making an 's' curve path
+    // List.of(new Translation2d(.5, .5), new Translation2d(1, -.5), new Translation2d(1.5, 0)),
+    // // End 3 meters straight ahead of where we started, facing forward
+    // new Pose2d(1.51, 0, new Rotation2d(0)),
+    // // Pass config
+    // config);
 
     // should go 1 meter forward
     // Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(new Pose2d(0, 0, Rotation2d.fromDegrees(90)),
     //     List.of(), new Pose2d(0, .5, Rotation2d.fromDegrees(90)), config);
 
-    RamseteCommand ramseteCommand = new RamseteCommand(exampleTrajectory, driveTrain2::getPose,
+    RamseteCommand ramseteCommand = new RamseteCommand(trajectory, driveTrain2::getPose,
         new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
         new SimpleMotorFeedforward(Constants.ksVolts, Constants.kvVoltSecondsPerMeter,
             Constants.kaVoltSecondsSquaredPerMeter),
@@ -169,7 +180,7 @@ public class RobotContainer {
         driveTrain2::tankDriveVolts, driveTrain2);
 
     // Reset odometry
-    driveTrain2.resetOdometry(exampleTrajectory.getInitialPose());
+    driveTrain2.resetOdometry(trajectory.getInitialPose());
 
     // Run path following command, then stop at the end.
     return ramseteCommand.andThen(() -> driveTrain2.tankDriveVolts(0, 0));

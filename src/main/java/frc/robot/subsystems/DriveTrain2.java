@@ -117,7 +117,15 @@ public class DriveTrain2 extends SubsystemBase {
    * @param fwd the commanded forward movement
    * @param rot the commanded rotation
    */
-  public void curvatureDrive(double fwd, double rot) {
+  public void teleopDrive(double fwd, double rot) {
+    // double eVLeft = leftMainTalon.getSelectedSensorVelocity();
+    // double eVRight = rightMainTalon.getSelectedSensorVelocity();
+
+    // if (rot == 0) {
+    //   rot = (eVLeft + eVRight) / 768 * Math.abs(fwd);
+    //   SmartDashboard.putNumber("tError", rot);
+    // }
+
     differentialDrive.curvatureDrive(fwd, rot, true);
     logTelemetry();
   }

@@ -40,7 +40,7 @@ public class MoveTower extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (upButton.getAsBoolean() || upButton2.getAsBoolean()) {
+    if (upButton.getAsBoolean() /* || upButton2.getAsBoolean()*/)  {
       tower.set(-.5);
     } else if (downButton.getAsBoolean()) {
       tower.set(.5);

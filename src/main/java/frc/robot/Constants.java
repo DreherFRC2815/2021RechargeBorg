@@ -36,6 +36,7 @@ public class Constants {
     public static final double wheelCircumference = 18.85;  // inches
     public static final double wheelCircumferenceMeters = 0.47877871986;  // meters
     public static final double wheelDiameterMeters = 0.1524;  // meters
+    public static final double wheelLeftRightDistanceMeters = 0.6096; 
     public static final double gearboxRatio = 10.91;
 
     public static final double cameraHeight = -1;

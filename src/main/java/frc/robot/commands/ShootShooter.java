@@ -18,7 +18,7 @@ public class ShootShooter extends CommandBase {
   private final BooleanSupplier shoot;
   private final IntSupplier POV;
 
-  private double power = 1;
+  private double power = 0.55;
   private boolean shooting = false;
   private boolean didSet = false;
 
@@ -52,14 +52,14 @@ public class ShootShooter extends CommandBase {
       
       didSet = true;
     }
-
+    
     if (shoot.getAsBoolean()) {
       shooting = !shooting;
     }
 
     shooter.setPower(shooting ? power : 0);
 
-    SmartDashboard.putNumber("Power", power);
+    SmartDashboard.getNumber("Power", power);
   }
 
   // Called once the command ends or is interrupted.
