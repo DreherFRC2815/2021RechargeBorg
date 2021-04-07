@@ -6,7 +6,7 @@ package frc.robot.commands.autoCommandGroups;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.autoCommands.AutoDriveDistance;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.DriveTrain2;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -14,10 +14,10 @@ import frc.robot.subsystems.DriveTrain;
 public class TestAuto extends SequentialCommandGroup {
 
   /** Creates a new TestAuto. */
-  public TestAuto(DriveTrain driveTrain) {
+  public TestAuto(DriveTrain2 driveTrain) {
 
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new AutoDriveDistance(driveTrain, 12*3));
+    addCommands(new AutoDriveDistance(driveTrain, 12));
   }
 }

@@ -48,7 +48,7 @@ public class Robot extends TimedRobot {
       System.out.println(e.getStackTrace());
     }
 
-    robotContainer.setTrajectory(trajectory);
+    //  robotContainer.setTrajectory(trajectory);
   }
 
   /**

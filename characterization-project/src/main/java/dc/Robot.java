@@ -59,7 +59,7 @@ class Encoder {
 //  private final double gearboxRatio = 10.91;
 
   private final WPI_TalonSRX talon;
-  private double multi = 1.0;
+  private boolean reverse = false;
   private double dpp;
 
   public Encoder(WPI_TalonSRX t) {
@@ -67,21 +67,27 @@ class Encoder {
   }
 
   public void setReverseDirection(boolean r) {
-    if (r) {
-      multi *= -1.0;
-    }
+    reverse = r;
   }
 
   public void setDistancePerPulse(double d) {
     dpp = d;
   }
 
-  public double getDistance() {
-    return talon.getSelectedSensorPosition() * dpp * multi;
+  public double getRawPosition() {
+    return talon.getSelectedSensorPosition() * (reverse ? -1 : 1);
   }
 
-  public double getRate() {
-    return talon.getSelectedSensorVelocity() * 10 * dpp * multi;
+  public double getRawVelocity() {
+    return talon.getSelectedSensorVelocity() * (reverse ? -1 : 1);
+  }
+
+  public double getPosition() {
+    return getRawPosition()  * dpp;
+  }
+
+  public double getVelocity() {
+    return (getRawVelocity() * dpp) * 10.0;
   }
 }
 
@@ -92,9 +98,13 @@ public class Robot extends TimedRobot {
   static private int ENCODER_EPR = 4096;
   static private double GEARING = 10.91;
   
-//  private double encoderConstant = (1 / (Math.PI * 0.1524)) * (1 / ENCODER_EDGES_PER_REV);
-//  private double encoderConstant = (Math.PI * 0.1524 * 2.0) / 4096.0;
-  private double encoderConstant = 4096.0/GEARING;
+//  private double encoderConstant = (1 / (Math.PI * 0.1524)) * (1 / (ENCODER_EDGES_PER_REV));
+  // private double encoderConstant = (Math.PI * 0.1524) / 4096.0;
+  // private double encoderConstant = (1.0 / 4096.0) * 0.1524 * Math.PI;
+  // private double encoderConstant = 4096.0/GEARING;
+  private double encoderConstant = 0.47877871986 / 4096;
+  // private double encoderConstant = 1.0 / ((1.0 / 0.47878) * (1024.0 * 4.0 * 1.0));
+
 
   XboxController xbox;
   DifferentialDrive drive;
@@ -156,16 +166,16 @@ public class Robot extends TimedRobot {
         encoder.setReverseDirection(false);
 
         encoder.setDistancePerPulse((double) encoderConstant);
-        rightEncoderPosition = encoder::getDistance;
-        rightEncoderRate = encoder::getRate;
+        rightEncoderPosition = encoder::getPosition;
+        rightEncoderRate = encoder::getVelocity;
 
         break;
       case LEFT:
         encoder = new Encoder(motor);
         encoder.setReverseDirection(true);
-        encoder.setDistancePerPulse((double) encoderConstant);
-        leftEncoderPosition = encoder::getDistance;
-        leftEncoderRate = encoder::getRate;
+        encoder.setDistancePerPulse(encoderConstant);
+        leftEncoderPosition = encoder::getPosition;
+        leftEncoderRate = encoder::getVelocity;
 
 
         break;

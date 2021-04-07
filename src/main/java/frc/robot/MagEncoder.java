@@ -20,6 +20,14 @@ public class MagEncoder {
         dpp = d;
     }
 
+    public double getRawDistance() {
+        return talon.getSelectedSensorPosition();
+    }
+
+    public double getRawVelocity() {
+        return talon.getSelectedSensorVelocity();
+    }
+
     public double getDistance() {
         return talon.getSelectedSensorPosition() * dpp;
     }

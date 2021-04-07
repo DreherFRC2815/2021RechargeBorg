@@ -156,19 +156,19 @@ public class RobotContainer {
 
     // An example trajectory to follow. All units in meters.
     // s curve
-    // Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-    // // Start at the origin facing the +X direction
-    // new Pose2d(0, 0, new Rotation2d(0)),
-    // // Pass through these two interior waypoints, making an 's' curve path
-    // List.of(new Translation2d(.5, .5), new Translation2d(1, -.5), new Translation2d(1.5, 0)),
-    // // End 3 meters straight ahead of where we started, facing forward
-    // new Pose2d(1.51, 0, new Rotation2d(0)),
-    // // Pass config
-    // config);
+    trajectory = TrajectoryGenerator.generateTrajectory(
+    // Start at the origin facing the +X direction
+    new Pose2d(0, 0, new Rotation2d(0)),
+    // Pass through these two interior waypoints, making an 's' curve path
+    List.of(new Translation2d(.5, .5), new Translation2d(1, -.5), new Translation2d(1.5, 0)),
+    // End 3 meters straight ahead of where we started, facing forward
+    new Pose2d(1.51, 0, new Rotation2d(0)),
+    // Pass config
+    config);
 
     // should go 1 meter forward
-    // Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(new Pose2d(0, 0, Rotation2d.fromDegrees(90)),
-    //     List.of(), new Pose2d(0, .5, Rotation2d.fromDegrees(90)), config);
+    // trajectory = TrajectoryGenerator.generateTrajectory(new Pose2d(0, 0, Rotation2d.fromDegrees(90)),
+    //     List.of(), new Pose2d(0, 1, Rotation2d.fromDegrees(90)), config);
 
     RamseteCommand ramseteCommand = new RamseteCommand(trajectory, driveTrain2::getPose,
         new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
@@ -184,5 +184,7 @@ public class RobotContainer {
 
     // Run path following command, then stop at the end.
     return ramseteCommand.andThen(() -> driveTrain2.tankDriveVolts(0, 0));
+
+    // return new TestAuto(driveTrain2);
   }
 }
