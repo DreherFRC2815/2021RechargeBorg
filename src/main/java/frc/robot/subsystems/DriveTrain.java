@@ -7,9 +7,6 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.Faults;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -50,37 +47,6 @@ public class DriveTrain extends SubsystemBase {
     }
   }
 
-  // public void configPositionalDrive(double maxP) {
-  //   for (int i = 0; i < Constants.mainTalonPorts.length; i++) {
-  //     WPI_TalonSRX talon = talons[i];
-
-  //     talon.configFactoryDefault();
-
-  //     talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
-
-  //     talon.setSensorPhase(true);
-  //     talon.setInverted((i == 0 ? false : true));
-
-  //     talon.configNominalOutputForward(.5, 30);
-  //     talon.configNominalOutputReverse(-.5, 30);
-  //     talon.configPeakOutputForward(maxP, 30);
-  //     talon.configPeakOutputReverse(-maxP, 30);
-  //     talon.configAllowableClosedloopError(0, 0, 30);
-
-  //     talon.config_kF(0, Constants.kGains.kF, 30);
-  //     talon.config_kP(0, Constants.kGains.kP, 30);
-  //     talon.config_kI(0, Constants.kGains.kI, 30);
-  //     talon.config_kD(0, Constants.kGains.kD, 30);
-  
-  //     // int absolutePosition = talon.getSensorCollection().getPulseWidthPosition() & 0xFFF;
-
-  //     // if (Constants.kSensorPhase) { absolutePosition *= -1; }
-  //     // if (Constants.kMotorInvert) { absolutePosition *= -1; }
-
-  //     talon.setSelectedSensorPosition(0, 0, 30);
-  //   }
-  // }
-
   public void driveTank(double lPow, double rPow) {
     botDrive.tankDrive(lPow, rPow);
   }
@@ -88,7 +54,7 @@ public class DriveTrain extends SubsystemBase {
   public void drive(double f, double t) {
     SmartDashboard.putNumber("forw", f);
     SmartDashboard.putNumber("turn", t);
-    
+
     double eLeft = talons[Constants.mainTalonPorts[0]].getSelectedSensorPosition();
     double eRight = talons[Constants.mainTalonPorts[1]].getSelectedSensorPosition();
 

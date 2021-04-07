@@ -40,7 +40,6 @@ import frc.robot.commands.MoveTower;
 import frc.robot.commands.ShootShooter;
 import frc.robot.commands.autoCommandGroups.TestAuto;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.DriveTrain2;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
@@ -61,14 +60,8 @@ public class RobotContainer {
   private final String driveMode = "normal";
   public final static ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 
-  RamseteController controller1 = new RamseteController();
-  RamseteController controller2 = new RamseteController(2.1, 0.8);
-
-  private Trajectory trajectory;
-
   // Subsystems
-  // private final DriveTrain driveTrain = new DriveTrain();
-  private final DriveTrain2 driveTrain2 = new DriveTrain2();
+  private final DriveTrain DriveTrain = new DriveTrain();
   private final Tower tower = new Tower();
   private final Hopper hopper = new Hopper();
   private final Shooter shooter = new Shooter();
@@ -95,11 +88,11 @@ public class RobotContainer {
     }
 
     if (driveMode.equals("trigger")) {
-      drive = new Drive(driveTrain2,
+      drive = new Drive(DriveTrain,
           () -> (mano.getTriggerAxis(GenericHID.Hand.kRight) - mano.getTriggerAxis(GenericHID.Hand.kLeft)),
           () -> mano.getX(GenericHID.Hand.kRight));
     } else {
-      drive = new Drive(driveTrain2, () -> mano.getY(GenericHID.Hand.kLeft), () -> mano.getX(GenericHID.Hand.kRight));
+      drive = new Drive(DriveTrain, () -> mano.getY(GenericHID.Hand.kLeft), () -> mano.getX(GenericHID.Hand.kRight));
     }
 
     moveTower = new MoveTower(tower, () -> mano2.getBumper(GenericHID.Hand.kRight), () -> mano2.getXButton(),
@@ -115,21 +108,17 @@ public class RobotContainer {
       moveIntake = new MoveIntake(intake, () -> mano2.getY(GenericHID.Hand.kLeft));
     }
 
-    driveTrain2.setDefaultCommand(drive);
+    DriveTrain.setDefaultCommand(drive);
     tower.setDefaultCommand(moveTower);
     hopper.setDefaultCommand(moveHopper);
     shooter.setDefaultCommand(shootShooter);
     intake.setDefaultCommand(moveIntake);
 
-    driveTrain2.resetEncoders();
+    DriveTrain.resetEncoders();
   }
 
   public static ADXRS450_Gyro getGyro() {
     return gyro;
-  }
-
-  public void setTrajectory(Trajectory t) {
-    trajectory = t;
   }
 
   /**
@@ -138,53 +127,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public SequentialCommandGroup getAutonomousCommand() {
-
-    // Create a voltage constraint to ensure we don't accelerate too fast
-    var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(new SimpleMotorFeedforward(Constants.ksVolts,
-        Constants.kvVoltSecondsPerMeter, Constants.kaVoltSecondsSquaredPerMeter), Constants.kDriveKinematics, 10);
-
-    // Create config for trajectory
-    TrajectoryConfig config = new TrajectoryConfig(Constants.kMaxSpeedMetersPerSecond,
-        Constants.kMaxAccelerationMetersPerSecondSquared)
-            // Add kinematics to ensure max speed is actually obeyed // unsure if it's
-            // actually that as there's a MaxVelocityConstraint
-            .setKinematics(Constants.kDriveKinematics)
-            // apply max velocity constraint
-            // .addConstraint(new MaxVelocityConstraint(.2))
-            // Apply the voltage constraint
-            .addConstraint(autoVoltageConstraint);
-
-    // An example trajectory to follow. All units in meters.
-    // s curve
-    trajectory = TrajectoryGenerator.generateTrajectory(
-    // Start at the origin facing the +X direction
-    new Pose2d(0, 0, new Rotation2d(0)),
-    // Pass through these two interior waypoints, making an 's' curve path
-    List.of(new Translation2d(.5, .5), new Translation2d(1, -.5), new Translation2d(1.5, 0)),
-    // End 3 meters straight ahead of where we started, facing forward
-    new Pose2d(1.51, 0, new Rotation2d(0)),
-    // Pass config
-    config);
-
-    // should go 1 meter forward
-    // trajectory = TrajectoryGenerator.generateTrajectory(new Pose2d(0, 0, Rotation2d.fromDegrees(90)),
-    //     List.of(), new Pose2d(0, 1, Rotation2d.fromDegrees(90)), config);
-
-    RamseteCommand ramseteCommand = new RamseteCommand(trajectory, driveTrain2::getPose,
-        new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
-        new SimpleMotorFeedforward(Constants.ksVolts, Constants.kvVoltSecondsPerMeter,
-            Constants.kaVoltSecondsSquaredPerMeter),
-        Constants.kDriveKinematics, driveTrain2::getWheelSpeeds, new PIDController(Constants.kPDriveVel, 0, 0),
-        new PIDController(Constants.kPDriveVel, 0, 0),
-        // RamseteCommand passes volts to the callback
-        driveTrain2::tankDriveVolts, driveTrain2);
-
-    // Reset odometry
-    driveTrain2.resetOdometry(trajectory.getInitialPose());
-
-    // Run path following command, then stop at the end.
-    return ramseteCommand.andThen(() -> driveTrain2.tankDriveVolts(0, 0));
-
-    // return new TestAuto(driveTrain2);
+    return new TestAuto(DriveTrain);
   }
 }

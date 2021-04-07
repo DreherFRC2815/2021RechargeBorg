@@ -11,10 +11,9 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.DriveTrain2;
 
 public class Drive extends CommandBase {
-  private final DriveTrain2 driveTrain;
+  private final DriveTrain driveTrain;
   
   private final DoubleSupplier forwardsAxis;
   private final DoubleSupplier turnAxis;
@@ -22,7 +21,7 @@ public class Drive extends CommandBase {
   /**
    * Creates a new Drive.
    */
-  public Drive(DriveTrain2 d, DoubleSupplier f, DoubleSupplier t) {
+  public Drive(DriveTrain d, DoubleSupplier f, DoubleSupplier t) {
     driveTrain = d;
     forwardsAxis = f;
     turnAxis = t;
@@ -35,24 +34,6 @@ public class Drive extends CommandBase {
   @Override
   public void initialize() {
   }
-
-  // // Called every time the scheduler runs while the command is scheduled.
-  // @Override
-  // public void execute() {
-  //   double forwardsValue = -forwardsAxis.getAsDouble();
-  //   double turnValue = turnAxis.getAsDouble() * .8;
-
-  //   if (Math.abs(forwardsValue) < .05) {
-  //     forwardsValue = 0.0;
-  //   }
-
-  //   if (Math.abs(turnValue) < .05) {
-  //     turnValue = 0.0;
-  //   }
-
-  //   // driveTrain.curvatureDrive(Math.copySign(Math.pow(forwardsValue, 1.25), forwardsValue), Math.copySign(Math.pow(turnValue, 1.25), turnValue));
-  //   driveTrain.curvatureDrive(forwardsValue, turnValue);
-  // }
 
   @Override
   public void execute() {
@@ -78,7 +59,7 @@ public class Drive extends CommandBase {
       turnNegation = -1.0;
     }
 
-    driveTrain.teleopDrive(Math.pow(Math.abs(forwardsValue), 1.5) * forwardsNegation, Math.pow(Math.abs(turnValue), 1.5) * turnNegation);
+    driveTrain.drive(Math.pow(Math.abs(forwardsValue), 1.5) * forwardsNegation, Math.pow(Math.abs(turnValue), 1.5) * turnNegation);
   }
 
   // Called once the command ends or is interrupted.

@@ -7,9 +7,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.controller.RamseteController;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
-
 /**
  * Robot constants
  */
@@ -34,29 +31,9 @@ public class Constants {
     public static final int towerPort = 1;
     
     public static final double wheelCircumference = 18.85;  // inches
-    public static final double wheelCircumferenceMeters = 0.47878;  // meters
-    public static final double wheelDiameterMeters = 0.1524;  // meters
     public static final double gearboxRatio = 10.91;
 
     public static final double cameraHeight = -1;
     public static final double cameraFovX = 49.7;
     public static final double cameraFovY = 59.6;
-
-    // PathWeaver stuff
-    public static final double ksVolts = 0.657;
-    public static final double kvVoltSecondsPerMeter = 6.31;
-    public static final double kaVoltSecondsSquaredPerMeter = 0.576;
-
-    public static final double kPDriveVel = 0.0481;
-
-    public static final double kTrackwidthMeters = 0.5715;
-    public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackwidthMeters);
-
-    public static final double kMaxSpeedMetersPerSecond = 0.3;
-    public static final double kMaxAccelerationMetersPerSecondSquared = .4;
-
-    public static final double kRamseteB = 2.0;
-    public static final double kRamseteZeta = 0.7;
-
-    public static final double kMagEncoderDistancePerPulse = 0.47877871986 / 4096.0;
 }
