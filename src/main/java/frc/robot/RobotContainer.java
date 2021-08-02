@@ -92,7 +92,6 @@ public class RobotContainer {
             () -> stick.getRawButton(4));
 
     climb = new Climb(climber, () -> stick.getRawButtonPressed(11), () -> stick.getRawButtonPressed(12));
-
     driveTrain.setDefaultCommand(drive);
     tower.setDefaultCommand(moveTower);
     hopper.setDefaultCommand(moveHopper);

@@ -38,7 +38,7 @@ public class Intake extends SubsystemBase {
   }
 
   public void init() {
-    s.set(Value.kReverse);
+    s.set(Value.kForward);
   }
 
   @Override
