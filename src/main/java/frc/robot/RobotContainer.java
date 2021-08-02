@@ -81,15 +81,15 @@ public class RobotContainer {
     }
 
     moveTower = new MoveTower(tower, () -> mano2.getBumper(GenericHID.Hand.kRight), () -> mano2.getXButton(),
-        () -> mano2.getBumper(GenericHID.Hand.kLeft), () -> stick.getRawButtonPressed(1), () -> mano2.getAButton(), () -> stick.getRawButtonPressed(3));
+        () -> mano2.getBumper(GenericHID.Hand.kLeft), () -> stick.getRawButton(1), () -> mano2.getAButton(), () -> stick.getRawButton(3));
 
-    moveHopper = new MoveHopper(hopper, () -> mano2.getXButton(), () -> mano2.getAButton(), () -> stick.getRawButtonPressed(1), () -> stick.getRawButtonPressed(3));
+    moveHopper = new MoveHopper(hopper, () -> mano2.getXButton(), () -> mano2.getAButton(), () -> stick.getRawButton(1), () -> stick.getRawButton(3));
     shootShooter = new ShootShooter(shooter, () -> mano2.getYButtonPressed(), () -> mano2.getPOV(), () -> stick.getRawButtonPressed(2));
 
     moveIntake = new MoveIntake(intake,
           () -> (mano.getTriggerAxis(GenericHID.Hand.kRight) - mano.getTriggerAxis(GenericHID.Hand.kLeft)),
-           () -> mano.getBButton(), () -> stick.getRawButtonPressed(5), () -> stick.getRawButtonPressed(3),
-            () -> stick.getRawButtonPressed(4));
+           () -> mano.getBButton(), () -> stick.getRawButtonPressed(5), () -> stick.getRawButton(3),
+            () -> stick.getRawButton(4));
 
     climb = new Climb(climber, () -> stick.getRawButtonPressed(11), () -> stick.getRawButtonPressed(12));
 
