@@ -7,15 +7,18 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
   private final CANSparkMax motor;
-
+  private final DoubleSolenoid s;
   /** Creates a new Intake. */
   public Intake() {
     motor = new CANSparkMax(Constants.intakePort, MotorType.kBrushless);
+    s = new DoubleSolenoid(0,4,5);
   }
 
   public void set(boolean on) {
@@ -24,6 +27,18 @@ public class Intake extends SubsystemBase {
 
   public void set(double p) {
     motor.set(p);
+  }
+  
+  public void toggle() {
+    if (s.get().equals(Value.kOff)) {
+      s.set(Value.kForward);
+    }else {
+      s.toggle();
+    }
+  }
+
+  public void init() {
+    s.set(Value.kReverse);
   }
 
   @Override

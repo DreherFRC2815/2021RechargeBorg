@@ -12,13 +12,20 @@ import frc.robot.subsystems.Intake;
 
 public class MoveIntake extends CommandBase {
   private final Intake intake;
-  
+  private final BooleanSupplier button;
   private final DoubleSupplier axis;
+  private final BooleanSupplier toggle;
+  private final BooleanSupplier in;
+  private final BooleanSupplier out;
 
   /** Creates a new MoveIntake. */
-  public MoveIntake(Intake i, DoubleSupplier a) {
+  public MoveIntake(Intake i, DoubleSupplier a, BooleanSupplier b, BooleanSupplier t, BooleanSupplier i2, BooleanSupplier o) {
     intake = i;
     axis = a;
+    button = b;
+    toggle = t;
+    in = i2;
+    out = o;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake);
@@ -26,12 +33,27 @@ public class MoveIntake extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    intake.init();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.set(axis.getAsDouble() * .75);
+    boolean pressed = button.getAsBoolean();
+    if (pressed) {
+      intake.set(.8);
+    } else if (in.getAsBoolean()) {
+        intake.set(.4);
+    } else if (out.getAsBoolean()) {
+        intake.set(-.4);
+    } else {
+    intake.set(axis.getAsDouble() * .4);
+    }
+    boolean t = toggle.getAsBoolean();
+    if (t) {
+      intake.toggle();
+    }
   }
 
   // Called once the command ends or is interrupted.

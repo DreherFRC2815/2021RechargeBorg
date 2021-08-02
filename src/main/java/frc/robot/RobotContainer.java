@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -33,16 +34,19 @@ import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConst
 import edu.wpi.first.wpilibj.trajectory.constraint.MaxVelocityConstraint;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.Climb;
 import frc.robot.commands.Drive;
 import frc.robot.commands.MoveHopper;
 import frc.robot.commands.MoveIntake;
 import frc.robot.commands.MoveTower;
 import frc.robot.commands.ShootShooter;
 import frc.robot.commands.autoCommandGroups.TestAuto;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+// import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Tower;
 
 /**
@@ -52,6 +56,7 @@ public class RobotContainer {
   // Controllers
   private XboxController mano;
   private XboxController mano2;
+  private Joystick stick;
   // private final XboxController mano2 =
   // DriverStation.getInstance().getJoystickName(1).isEmpty() ? mano : new
   // XboxController(1);
@@ -61,11 +66,12 @@ public class RobotContainer {
   public final static ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 
   // Subsystems
-  private final DriveTrain DriveTrain = new DriveTrain();
+  private final DriveTrain driveTrain = new DriveTrain();
   private final Tower tower = new Tower();
   private final Hopper hopper = new Hopper();
   private final Shooter shooter = new Shooter();
   private final Intake intake = new Intake();
+  private final Climber climber = new Climber();
 
   // Commands
   private Drive drive;
@@ -73,6 +79,7 @@ public class RobotContainer {
   private MoveHopper moveHopper;
   private ShootShooter shootShooter;
   private MoveIntake moveIntake;
+  private Climb climb;
 
   public RobotContainer() {
     setup();
@@ -80,7 +87,7 @@ public class RobotContainer {
 
   public void setup() {
     mano = new XboxController(0);
-
+    stick = new Joystick(3);
     if (DriverStation.getInstance().getJoystickName(1).isEmpty()) {
       mano2 = mano;
     } else {
@@ -88,33 +95,33 @@ public class RobotContainer {
     }
 
     if (driveMode.equals("trigger")) {
-      drive = new Drive(DriveTrain,
+      drive = new Drive(driveTrain,
           () -> (mano.getTriggerAxis(GenericHID.Hand.kRight) - mano.getTriggerAxis(GenericHID.Hand.kLeft)),
           () -> mano.getX(GenericHID.Hand.kRight));
     } else {
-      drive = new Drive(DriveTrain, () -> mano.getY(GenericHID.Hand.kLeft), () -> mano.getX(GenericHID.Hand.kRight));
+      drive = new Drive(driveTrain, () -> mano.getY(GenericHID.Hand.kLeft), () -> mano.getX(GenericHID.Hand.kRight));
     }
 
     moveTower = new MoveTower(tower, () -> mano2.getBumper(GenericHID.Hand.kRight), () -> mano2.getXButton(),
-        () -> mano2.getBumper(GenericHID.Hand.kLeft));
+        () -> mano2.getBumper(GenericHID.Hand.kLeft), () -> stick.getRawButtonPressed(1), () -> mano2.getAButton(), () -> stick.getRawButtonPressed(3));
 
-    moveHopper = new MoveHopper(hopper, () -> mano2.getXButton(), () -> mano2.getAButton());
-    shootShooter = new ShootShooter(shooter, () -> mano2.getYButtonPressed(), () -> mano2.getPOV());
+    moveHopper = new MoveHopper(hopper, () -> mano2.getXButton(), () -> mano2.getAButton(), () -> stick.getRawButtonPressed(1), () -> stick.getRawButtonPressed(3));
+    shootShooter = new ShootShooter(shooter, () -> mano2.getYButtonPressed(), () -> mano2.getPOV(), () -> stick.getRawButtonPressed(2));
 
-    if (mano2.equals(mano)) {
       moveIntake = new MoveIntake(intake,
-          () -> (mano.getTriggerAxis(GenericHID.Hand.kRight) - mano.getTriggerAxis(GenericHID.Hand.kLeft)));
-    } else {
-      moveIntake = new MoveIntake(intake, () -> mano2.getY(GenericHID.Hand.kLeft));
-    }
+          () -> (mano.getTriggerAxis(GenericHID.Hand.kRight) - mano.getTriggerAxis(GenericHID.Hand.kLeft)),
+           () -> mano.getBButton(), () -> stick.getRawButtonPressed(3), () -> stick.getRawButtonPressed(4),
+            () -> stick.getRawButtonPressed(6));
+    climb = new Climb(climber, () -> stick.getRawButtonPressed(11), () -> stick.getRawButtonPressed(12));
 
-    DriveTrain.setDefaultCommand(drive);
+    driveTrain.setDefaultCommand(drive);
     tower.setDefaultCommand(moveTower);
     hopper.setDefaultCommand(moveHopper);
     shooter.setDefaultCommand(shootShooter);
     intake.setDefaultCommand(moveIntake);
+    climber.setDefaultCommand(climb);
 
-    DriveTrain.resetEncoders();
+    driveTrain.resetEncoders();
   }
 
   public static ADXRS450_Gyro getGyro() {
@@ -127,6 +134,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public SequentialCommandGroup getAutonomousCommand() {
-    return new TestAuto(DriveTrain);
+    return new TestAuto(driveTrain);
   }
 }

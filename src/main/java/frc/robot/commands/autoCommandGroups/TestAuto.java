@@ -18,6 +18,6 @@ public class TestAuto extends SequentialCommandGroup {
 
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new AutoDriveDistance(driveTrain, 12));
+    addCommands(new AutoDriveDistance(driveTrain, 12*3));
   }
 }

@@ -1,0 +1,9 @@
+{
+  "lengthUnit": "Meter",
+  "exportUnit": "Always Meters",
+  "maxVelocity": 0.2,
+  "maxAcceleration": 0.25,
+  "wheelBase": 0.6096,
+  "gameName": "Skills Challenge",
+  "outputDir": "../../src/main/deploy/paths"
+}
