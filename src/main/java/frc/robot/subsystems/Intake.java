@@ -18,16 +18,16 @@ public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
   public Intake() {
     motor = new CANSparkMax(Constants.intakePort, MotorType.kBrushless);
-    s = new DoubleSolenoid(0,4,5);
+    s = new DoubleSolenoid(0,5,4);
   }
 
-  public void set(boolean on) {
-    motor.set(on ? -.6: 0);
-  }
+  // public void set(boolean on) {
+  //   motor.set(on ? -.6: 0);
+  // }
 
   public void set(double p) {
     motor.set(p);
-  }
+  } 
   
   public void toggle() {
     if (s.get().equals(Value.kOff)) {

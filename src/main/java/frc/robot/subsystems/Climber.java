@@ -13,7 +13,7 @@ public class Climber extends SubsystemBase{
     public Climber() {
       c = new Compressor(0);
       c.start();
-      s = new DoubleSolenoid(0, 0, 1);
+      s = new DoubleSolenoid(0, 1, 0);
       s2 = new DoubleSolenoid(0, 2, 3);
       
     }
@@ -24,7 +24,7 @@ public class Climber extends SubsystemBase{
 
     public void init() {
       s2.set(Value.kOff);
-      s.set(Value.kReverse)
+      s.set(Value.kReverse);
     }
     
     @Override
@@ -48,10 +48,10 @@ public class Climber extends SubsystemBase{
   }
   
   public void setUp() {
-    s.set(Value.kReverse);
+    s.set(Value.kForward);
   }
   
   public void setDown() {
-    s.set(Value.kForward);
+    s.set(Value.kReverse);
   }
 }
