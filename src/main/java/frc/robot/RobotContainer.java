@@ -81,9 +81,9 @@ public class RobotContainer {
     }
 
     moveTower = new MoveTower(tower, () -> mano2.getBumper(GenericHID.Hand.kRight), () -> mano2.getXButton(),
-        () -> mano2.getBumper(GenericHID.Hand.kLeft), () -> stick.getRawButton(1), () -> mano2.getAButton(), () -> stick.getRawButton(3));
+        () -> mano2.getBumper(GenericHID.Hand.kLeft), () -> stick.getRawButton(1), () -> mano2.getAButton(), () -> stick.getRawButton(6));
 
-    moveHopper = new MoveHopper(hopper, () -> mano2.getXButton(), () -> mano2.getAButton(), () -> stick.getRawButton(1), () -> stick.getRawButton(3));
+    moveHopper = new MoveHopper(hopper, () -> mano2.getXButton(), () -> mano2.getAButton(), () -> stick.getRawButton(1), () -> stick.getRawButton(6));
     shootShooter = new ShootShooter(shooter, () -> mano2.getYButtonPressed(), () -> mano2.getPOV(), () -> stick.getRawButtonPressed(2));
 
     moveIntake = new MoveIntake(intake,
