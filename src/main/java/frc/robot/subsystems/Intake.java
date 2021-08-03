@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -38,7 +39,16 @@ public class Intake extends SubsystemBase {
   }
 
   public void init() {
-    s.set(Value.kForward);
+    s.set(Value.kReverse);
+    print();
+  }
+
+  public void print() {
+    if (s.get().equals(Value.kForward))  {
+      SmartDashboard.putBoolean("intake down?", true);
+    }else {
+      SmartDashboard.putBoolean("intake down?", false);
+    }
   }
 
   @Override

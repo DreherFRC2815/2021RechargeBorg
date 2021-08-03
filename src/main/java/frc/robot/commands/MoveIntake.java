@@ -42,7 +42,7 @@ public class MoveIntake extends CommandBase {
   public void execute() {
     boolean pressed = button.getAsBoolean();
     if (pressed) {
-      intake.set(.8);
+      intake.set(-.8);
     } else if (in.getAsBoolean()) {
         intake.set(.4);
     } else if (out.getAsBoolean()) {

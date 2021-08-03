@@ -11,8 +11,8 @@ public class Climb extends CommandBase {
     private final BooleanSupplier engage;
     public Climb(Climber c, BooleanSupplier l, BooleanSupplier e) {
         climber = c;
-        engage = e;
         lift = l;
+        engage = e;
         addRequirements(climber);
 
         
