@@ -29,6 +29,14 @@ public class Intake extends SubsystemBase {
   public void set(double p) {
     motor.set(p);
   } 
+
+  public void setDown() {
+    s.set(Value.kForward);
+  } 
+
+  public void setUp() {
+    s.set(Value.kReverse);
+  } 
   
   public void toggle() {
     if (s.get().equals(Value.kOff)) {
@@ -39,7 +47,7 @@ public class Intake extends SubsystemBase {
   }
 
   public void init() {
-    s.set(Value.kReverse);
+    s.set(Value.kOff);
     print();
   }
 

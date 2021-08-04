@@ -59,6 +59,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     robotContainer.setup();
+    CommandScheduler.getInstance().run();
   }
 
   /**

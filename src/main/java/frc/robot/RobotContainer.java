@@ -12,7 +12,11 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.Aim;
 import frc.robot.commands.Climb;
 import frc.robot.commands.Drive;
 import frc.robot.commands.MoveHopper;
@@ -58,12 +62,17 @@ public class RobotContainer {
   private ShootShooter shootShooter;
   private MoveIntake moveIntake;
   private Climb climb;
+  private Aim aim;
+  private Trigger trigger;
+  private Button button;
 
   public RobotContainer() {
     setup();
   }
 
   public void setup() {
+    // button = new Button(() -> stick.getRawButton(8));
+    // trigger = new Trigger(() -> stick.getRawButton(9));
     mano = new XboxController(0);
     stick = new Joystick(3);
     if (DriverStation.getInstance().getJoystickName(1).isEmpty()) {
@@ -75,9 +84,9 @@ public class RobotContainer {
     if (driveMode.equals("trigger")) {
       drive = new Drive(driveTrain,
           () -> (mano.getTriggerAxis(GenericHID.Hand.kRight) - mano.getTriggerAxis(GenericHID.Hand.kLeft)),
-          () -> mano.getX(GenericHID.Hand.kRight));
+          () -> mano.getX(GenericHID.Hand.kRight), () -> stick.getRawButton(9));
     } else {
-      drive = new Drive(driveTrain, () -> mano.getY(GenericHID.Hand.kLeft), () -> mano.getX(GenericHID.Hand.kRight));
+      drive = new Drive(driveTrain, () -> mano.getY(GenericHID.Hand.kLeft), () -> mano.getX(GenericHID.Hand.kRight), () -> stick.getRawButton(9));
     }
 
     moveTower = new MoveTower(tower, () -> mano2.getBumper(GenericHID.Hand.kRight), () -> mano2.getXButton(),
@@ -92,6 +101,11 @@ public class RobotContainer {
             () -> stick.getRawButton(4));
 
     climb = new Climb(climber, () -> stick.getRawButtonPressed(11), () -> stick.getRawButtonPressed(12));
+
+    // aim = new Aim(driveTrain, () -> stick.getRawButton(9));
+
+    // button.whenPressed(new Aim(driveTrain));
+    
     driveTrain.setDefaultCommand(drive);
     tower.setDefaultCommand(moveTower);
     hopper.setDefaultCommand(moveHopper);
@@ -112,6 +126,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public SequentialCommandGroup getAutonomousCommand() {
-    return new TestAuto(driveTrain);
+    return new TestAuto(driveTrain, shooter, hopper, tower);
   }
 }

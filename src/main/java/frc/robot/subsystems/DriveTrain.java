@@ -80,6 +80,8 @@ public class DriveTrain extends SubsystemBase {
   public void driveTicks(double ticks) {
     talons[Constants.mainTalonPorts[0]].set(ControlMode.Position, ticks);
     talons[Constants.mainTalonPorts[1]].set(ControlMode.Position, ticks);
+    // talons[Constants.mainTalonPorts[1]].set(ControlMode.MotionProfile, );
+
   }
 
   public void drive(double f, double t) {

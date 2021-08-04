@@ -24,7 +24,7 @@ public class Climber extends SubsystemBase{
 
     public void init() {
       s2.set(Value.kOff);
-      s.set(Value.kForward);
+      s.set(Value.kOff);
       s.toggle();
       print();
     }

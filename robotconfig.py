@@ -1,9 +1,9 @@
 {
     # Ports for motors
     # If doing drive test, treat this as the left side of the drivetrain
-    "motorPorts": [0, 1],
+    "motorPorts": [0,1],
     # Only if you are doing drive (leave empty "[]" if not)
-    "rightMotorPorts": [2, 3],
+    "rightMotorPorts": [2,3],
     # Class names of motor controllers used.
     # 'WPI_TalonSRX'
     # 'WPI_VictorSPX'
@@ -25,14 +25,14 @@
     # Encoder ports (leave empty "[]" if not needed)
     # Specifying encoder ports indicates you want to use Rio-side encoders
     # If doing drive test, treat this as the left side of the drivetrain
-    "encoderPorts": [0, 0],
+    "encoderPorts": [0],
     # Only if you are doing drive (leave empty "[]" if not)
-    "rightEncoderPorts": [3, 3],
+    "rightEncoderPorts": [3],
     # Set to True if encoders need to be inverted
     # If doing drive test, treat this as the left side of the drivetrain
-    "encoderInverted": True,
+    "encoderInverted": False,
     # Only if you are doing drive (set to False if not needed)
-    "rightEncoderInverted": False,
+    "rightEncoderInverted": True,
     # ** The following is only if you are using a gyro for the DriveTrain test**
     # Gyro type (one of "NavX", "Pigeon", "ADXRS450", "AnalogGyro", or "None")
     "gyroType": "ADXRS450",
@@ -44,8 +44,11 @@
     # "0" (Pigeon CAN ID or AnalogGyro channel),
     # "new WPI_TalonSRX(3)" (Pigeon on a Talon SRX),
     # "" (NavX using default SPI, ADXRS450 using onboard CS0, or no gyro)
-    "gyroPort": "",
+    "gyroPort": "SPI.Port.kMXP"
 }
+
+
+
 
 
 

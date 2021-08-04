@@ -4,9 +4,16 @@
 
 package frc.robot.commands.autoCommandGroups;
 
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.autoCommands.AutoDriveDistance;
+import frc.robot.commands.autoCommands.AutoHopper;
+import frc.robot.commands.autoCommands.AutoSetShooter;
+import frc.robot.commands.autoCommands.AutoTower;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Hopper;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Tower;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -14,10 +21,17 @@ import frc.robot.subsystems.DriveTrain;
 public class TestAuto extends SequentialCommandGroup {
 
   /** Creates a new TestAuto. */
-  public TestAuto(DriveTrain driveTrain) {
+  public TestAuto(DriveTrain driveTrain, Shooter shooter, Hopper hopper, Tower tower) {
 
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new AutoDriveDistance(driveTrain, 12*3));
+    addCommands(new AutoSetShooter(shooter, 2500), 
+
+    new ParallelCommandGroup(new AutoHopper(hopper, .5, 2),
+     new AutoTower(tower, -.3, 2))
+    
+    , new AutoSetShooter(shooter, 0),
+    
+    new AutoDriveDistance(driveTrain, 12*3));
   }
 }
